@@ -49,11 +49,10 @@ webclient-demo/
 ├── src/
 │   ├── main/
 │   │   ├── java/
-│   │   │   └── tw/feingqing/spring/reactor/webclient/
+│   │   │   └── tw/fengqing/spring/reactor/webclient/
 │   │   │       ├── model/         # 資料模型（如 Coffee）
 │   │   │       ├── support/       # Money 序列化/反序列化
-│   │   │       ├── WebClientConfig.java  # WebClient 設定
-│   │   │       └── WebclientDemoApplication.java # 主程式
+│   │   │       └── WebclientDemoApplication.java # 主程式（包含WebClient配置）
 │   │   └── resources/
 │   │       └── application.properties
 │   └── test/
