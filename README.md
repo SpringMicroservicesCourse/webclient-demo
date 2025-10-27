@@ -89,6 +89,66 @@ mvn clean package -Dmaven.test.skip=true
 java -jar target/webclient-demo-0.0.1-SNAPSHOT.jar
 ```
 
+## 執行結果示例
+
+### 實際執行輸出（2025-10-27）
+
+**前置條件**：需要先啟動 `hateoas-waiter-service` 提供 REST API（port 8080）
+
+**啟動階段**：
+```
+2025-10-27T21:17:42.708+08:00  INFO 51746 --- [main] t.f.s.r.w.WebclientDemoApplication : Starting WebclientDemoApplication using Java 21.0.7 with PID 51746
+2025-10-27T21:17:42.711+08:00  INFO 51746 --- [main] t.f.s.r.w.WebclientDemoApplication : No active profile set, falling back to 1 default profile: "default"
+2025-10-27T21:17:43.564+08:00  INFO 51746 --- [main] t.f.s.r.w.WebclientDemoApplication : Started WebclientDemoApplication in 1.005 seconds
+```
+
+**業務執行流程**：
+```
+# 1. 非同步GET請求：獲取espresso（執行緒：reactor-http-nio-2）
+2025-10-27T21:17:43.832+08:00  INFO 51746 --- [ctor-http-nio-2] t.f.s.r.w.WebclientDemoApplication : Coffee 1: Coffee(id=1, name=espresso, price=TWD 100.00, createTime=Mon Oct 27 21:17:38 CST 2025, updateTime=Mon Oct 27 21:17:38 CST 2025)
+
+# 2. 非同步POST請求：創建americano（執行緒：reactor-http-nio-3）
+2025-10-27T21:17:43.832+08:00  INFO 51746 --- [ctor-http-nio-3] t.f.s.r.w.WebclientDemoApplication : Coffee Created: Coffee(id=6, name=americano, price=TWD 125.00, createTime=Mon Oct 27 21:17:43 CST 2025, updateTime=Mon Oct 27 21:17:43 CST 2025)
+
+# 3. 主執行緒查詢列表（執行緒：main）
+2025-10-27T21:17:43.890+08:00  INFO 51746 --- [main] t.f.s.r.w.WebclientDemoApplication : Coffee in List: Coffee(id=1, name=espresso, price=TWD 100.00, ...)
+2025-10-27T21:17:43.891+08:00  INFO 51746 --- [main] t.f.s.r.w.WebclientDemoApplication : Coffee in List: Coffee(id=2, name=latte, price=TWD 125.00, ...)
+2025-10-27T21:17:43.891+08:00  INFO 51746 --- [main] t.f.s.r.w.WebclientDemoApplication : Coffee in List: Coffee(id=3, name=capuccino, price=TWD 125.00, ...)
+2025-10-27T21:17:43.891+08:00  INFO 51746 --- [main] t.f.s.r.w.WebclientDemoApplication : Coffee in List: Coffee(id=4, name=mocha, price=TWD 150.00, ...)
+2025-10-27T21:17:43.891+08:00  INFO 51746 --- [main] t.f.s.r.w.WebclientDemoApplication : Coffee in List: Coffee(id=5, name=macchiato, price=TWD 150.00, ...)
+2025-10-27T21:17:43.891+08:00  INFO 51746 --- [main] t.f.s.r.w.WebclientDemoApplication : Coffee in List: Coffee(id=6, name=americano, price=TWD 125.00, ...)
+```
+
+### 執行結果分析
+
+**🎯 關鍵觀察點**：
+
+1. **非同步並發執行** ⚡
+   - GET 和 POST 請求**幾乎同時**完成（時間戳：21:17:43.832）
+   - 使用不同的 Reactor 執行緒：`reactor-http-nio-2` 和 `reactor-http-nio-3`
+   - 展示了 Reactive 非阻塞的高效能特性
+
+2. **執行緒模型** 🧵
+   - `reactor-http-nio-2`：處理第一個 GET 請求
+   - `reactor-http-nio-3`：處理 POST 請求
+   - `main`：處理列表查詢（等待前兩個請求完成後）
+
+3. **執行效率** 🚀
+   - 應用程式啟動：**1.005 秒**
+   - 業務流程耗時：約 **326ms**
+   - 總體表現出色，適合高併發場景
+
+4. **資料一致性** ✅
+   - 成功獲取 ID=1 的 espresso
+   - 成功創建 ID=6 的 americano
+   - 列表查詢包含 6 個咖啡（包括新創建的）
+
+**💡 技術亮點**：
+- 使用 `CountDownLatch` 控制非同步流程
+- Netty 的 `reactor-http-nio-*` 執行緒池
+- 非阻塞 I/O，充分利用系統資源
+- Reactive Streams 背壓處理
+
 ## 進階說明
 
 ### 環境變數
@@ -97,8 +157,15 @@ java -jar target/webclient-demo-0.0.1-SNAPSHOT.jar
 ### 設定檔說明
 ```properties
 # application.properties 主要設定
-# 預設無特殊設定，如需自訂 WebClient baseUrl 請於 WebClientConfig.java 調整
+# 預設無特殊設定，WebClient baseUrl 在 WebclientDemoApplication.java 中配置
+# 配置項：http://localhost:8080
 ```
+
+### 依賴版本
+- **Java**: 21
+- **Spring Boot**: 3.4.5
+- **Joda Money**: 2.0.2
+- **Netty**: 4.1.119.Final
 
 ## 參考資源
 - [Spring WebFlux 官方文件](https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html)
