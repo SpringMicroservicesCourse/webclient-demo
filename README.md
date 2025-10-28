@@ -663,17 +663,17 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## About Us
 
-We focus on Agile Project Management, IoT application development, and Domain-Driven Design (DDD). We enjoy combining advanced technologies with practical experience to create user-friendly and flexible software solutions. Recently, we've been actively integrating AI technology to drive automated workflows, making development and operations more efficient and intelligent. We continue to learn and share, hoping to promote innovation and progress in software development together.
+我們主要專注在敏捷專案管理、物聯網（IoT）應用開發和領域驅動設計（DDD）。喜歡把先進技術和實務經驗結合，打造好用又靈活的軟體解決方案。近來也積極結合 AI 技術，推動自動化工作流，讓開發與運維更有效率、更智慧。持續學習與分享，希望能一起推動軟體開發的創新和進步。
 
 ## Contact
 
-**Fengqing Cloud Talk (風清雲談)** - Specialized in Agile Project Management, IoT application development, and Domain-Driven Design (DDD).
+**風清雲談** - 專注於敏捷專案管理、物聯網（IoT）應用開發和領域驅動設計（DDD）。
 
-- 🌐 Website: [Fengqing Cloud Talk Blog](https://blog.fengqing.tw/)
-- 📘 Facebook: [Fengqing Cloud Talk Fan Page](https://www.facebook.com/profile.php?id=61576838896062)
-- 💼 LinkedIn: [Chu Kuo-Lung](https://www.linkedin.com/in/chu-kuo-lung)
-- 📺 YouTube: [Cloud Talk Fengqing Channel](https://www.youtube.com/channel/UCXDqLTdCMiCJ1j8xGRfwEig)
-- 📧 Email: [fengqing.tw@gmail.com](mailto:fengqing.tw@gmail.com)
+- 🌐 官方網站：[風清雲談部落格](https://blog.fengqing.tw/)
+- 📘 Facebook：[風清雲談粉絲頁](https://www.facebook.com/profile.php?id=61576838896062)
+- 💼 LinkedIn：[Chu Kuo-Lung](https://www.linkedin.com/in/chu-kuo-lung)
+- 📺 YouTube：[雲談風清頻道](https://www.youtube.com/channel/UCXDqLTdCMiCJ1j8xGRfwEig)
+- 📧 Email：[fengqing.tw@gmail.com](mailto:fengqing.tw@gmail.com)
 
 ---
 
